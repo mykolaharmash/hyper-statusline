@@ -45,7 +45,7 @@ exports.decorateConfig = (config) => {
             }
             .footer_footer {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 position: absolute;
                 bottom: 0;
                 left: 0;
@@ -165,7 +165,7 @@ const setCwd = (pid, action) => {
             setGit(cwd);
         });
     }
-    
+
 };
 
 const isGit = (dir, cb) => {
@@ -191,7 +191,7 @@ const gitRemote = (repo, cb) => {
 }
 
 const gitDirty = (repo, cb) => {
-    exec(`git status --porcelain --ignore-submodules -uno`, { cwd: repo }, (err, stdout) => {
+    exec(`git status --porcelain --ignore-submodules`, { cwd: repo }, (err, stdout) => {
         if (err) {
             return cb(err);
         }
@@ -298,9 +298,9 @@ exports.decorateHyper = (Hyper, { React }) => {
                         ),
                         React.createElement('div', { className: 'footer_group' },
                             React.createElement('div', { className: 'component_component component_git' },
-                                React.createElement('div', { className: `component_item item_icon item_branch ${this.state.remote ? 'item_clickable' : ''}`, title: this.state.remote, onClick: this.handleBranchClick, hidden: !this.state.branch }, this.state.branch),
-                                React.createElement('div', { className: 'component_item item_icon item_number item_dirty', title: `${this.state.dirty} dirty ${this.state.dirty > 1 ? 'files' : 'file'}`, hidden: !this.state.dirty }, this.state.dirty),
-                                React.createElement('div', { className: 'component_item item_icon item_number item_ahead', title: `${this.state.ahead} ${this.state.ahead > 1 ? 'commits' : 'commit'} ahead`, hidden: !this.state.ahead }, this.state.ahead)
+                                React.createElement('div', { className: 'component_item item_icon item_branch', hidden: !this.state.branch }, this.state.branch),
+                                React.createElement('div', { className: 'component_item item_icon item_number item_dirty', title: `${this.state.dirty} dirty ${this.state.dirty > 1 ? 'files' : 'file'}`, hidden: !this.state.dirty }),
+                                React.createElement('div', { className: 'component_item item_icon item_number item_ahead', title: `${this.state.ahead} ${this.state.ahead > 1 ? 'commits' : 'commit'} ahead`, hidden: !this.state.ahead })
                             )
                         )
                     ))
@@ -317,7 +317,7 @@ exports.decorateHyper = (Hyper, { React }) => {
                     dirty: git.dirty,
                     ahead: git.ahead
                 });
-            }, 100);
+            }, 300);
         }
 
         componentWillUnmount() {
